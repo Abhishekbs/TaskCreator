@@ -7,12 +7,23 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import Auth from './Auth';
+import Typography from '@material-ui/core/Typography';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+// import MenuIcon from '@material-ui/icons/Menu';
+import PowerSettingNew from '@material-ui/icons/PowerSettingsNew';
 
 var moment = require('moment');
 
 const styles = theme => ({
     root: {
         flexGrow: 1,
+    },
+    menuButton: {
+        marginLeft: -12,
+        marginRight: 20,
+        float: 'right'
     },
     taskCreator: {
         display: 'flex',
@@ -28,6 +39,10 @@ const styles = theme => ({
     taskList: {
         marginTop: 20,
         marginBottom: 20
+    },
+    logout: {
+        display: 'flex',
+        justifyContent: 'flex-end'
     }
 });
 
@@ -88,14 +103,20 @@ class Home extends React.Component {
         return (
             <div className={classes.root}>
                 <Grid container spacing={24}>
-                    <Grid item xs={12} >
-                        <Button variant="contained" color="primary"
-                            onClick={() => this.logout()}
-                        >
-                            Log out
-                        </Button>
+                    <Grid item xs={12} className={classes.logout}>
+                        <AppBar position="static">
+                            <Toolbar>
+                                <Typography variant="h6" color="inherit" className={classes.root}>
+                                   
+                                </Typography>
+                                <IconButton onClick={this.logout} className={classes.menuButton} color="inherit" aria-label="Open drawer">
+                                    <PowerSettingNew />
+                                </IconButton>
+                            </Toolbar>
+                        </AppBar>
                     </Grid>
                 </Grid>
+
                 <Grid container spacing={24}>
                     <Grid item xs={8} className={classes.taskCreator}>
                         <TaskCreator />
