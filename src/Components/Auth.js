@@ -4,13 +4,14 @@ class Auth {
     }
 
     login(cb){
-        this.authenticated = true;
+        localStorage.setItem("isLoggedIn",true)
+        // this.authenticated = true;
         cb();
     }
 
 
     logout(cb){
-        this.authenticated = false;
+        localStorage.clear();
         cb();
     }
 

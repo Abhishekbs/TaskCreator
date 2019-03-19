@@ -6,11 +6,12 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
+import Auth from './Auth';
 
 var moment = require('moment');
 
 const styles = theme => ({
-    root:{
+    root: {
         flexGrow: 1,
     },
     taskCreator: {
@@ -26,7 +27,7 @@ const styles = theme => ({
     },
     taskList: {
         marginTop: 20,
-        marginBottom:20
+        marginBottom: 20
     }
 });
 
@@ -42,6 +43,12 @@ class Home extends React.Component {
         this.switchTask = this.switchTask.bind(this);
     }
 
+    logout = () => {
+        Auth.logout(() => {
+            this.props.history.push("/")
+        })
+    }
+
     switchTask = (tasktype) => {
         if (tasktype === "all") {
             this.setState({
@@ -50,7 +57,7 @@ class Home extends React.Component {
             })
         } else {
             let tempList = this.state.taskList;
-            let newList = tempList.filter((task) => (               
+            let newList = tempList.filter((task) => (
                 moment(new Date(task.taskDate)).isSameOrAfter(new Date())
             ));
             this.setState({
@@ -60,15 +67,15 @@ class Home extends React.Component {
         }
     }
 
-    static getDerivedStateFromProps(nextProps, prevState){
+    static getDerivedStateFromProps(nextProps, prevState) {
         console.log(nextProps, prevState);
-        if(!prevState.isFiltering){
-            return { taskList: [...nextProps.taskList], isFiltering : false};
+        if (!prevState.isFiltering) {
+            return { taskList: [...nextProps.taskList], isFiltering: false };
         }
         return {
-            isFiltering : false
+            isFiltering: false
         };
-     }
+    }
 
     // componentDidMount() {
     //     this.setState({
@@ -81,12 +88,21 @@ class Home extends React.Component {
         return (
             <div className={classes.root}>
                 <Grid container spacing={24}>
+                    <Grid item xs={12} >
+                        <Button variant="contained" color="primary"
+                            onClick={() => this.logout()}
+                        >
+                            Log out
+                        </Button>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={24}>
                     <Grid item xs={8} className={classes.taskCreator}>
                         <TaskCreator />
                     </Grid>
                     <Grid item xs={4}>
                         <Grid container spacing={16}>
-                            <Grid item xs={12}  className={classes.taskList} >
+                            <Grid item xs={12} className={classes.taskList} >
                                 <Grid container spacing={16} justify={"space-between"} alignItems={'center'}>
                                     <Grid item >
                                         <Button variant="contained" color="primary"
@@ -107,7 +123,7 @@ class Home extends React.Component {
                             <Grid item xs={12}>
                                 <Grid container spacing={32} direction={'column'} justify={'space-between'}>
                                     {
-                                       taskList.map((value) => (
+                                        taskList.map((value) => (
                                             <Grid key={value.taskName} item>
                                                 <Paper elevation={2}>
                                                     <TaskComponent task={value} />
@@ -128,7 +144,7 @@ class Home extends React.Component {
 
 const mapStoreToProps = store => (
     { taskList: store.todos }
-  );
-  
+);
+
 
 export default connect(mapStoreToProps)(withStyles(styles)(Home));

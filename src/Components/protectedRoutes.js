@@ -6,7 +6,7 @@ const ProtectedRoutes = ({ component: Component, ...rest }) => {
     return (
         <Route {...rest}
             render={(props) => {
-                if (Auth.isAuthenticated()) {
+                if (localStorage.getItem('isLoggedIn')) {
                     return <Component {...props} />
                 }
                 else {
